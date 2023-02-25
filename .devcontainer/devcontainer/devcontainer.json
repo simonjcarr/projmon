@@ -1,0 +1,4 @@
+{
+    "name": "projmon",
+    "image": "node:18"
+}
