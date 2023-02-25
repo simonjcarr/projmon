@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <ActionsList />
+    <ActionsList @row-click="onRowClick"/>
   </q-page>
 </template>
 
@@ -11,5 +11,10 @@ export default {
   components: {
     ActionsList
   },
+  methods: {
+    onRowClick(row) {
+      console.log(row.id)
+    }
+  }
 }
 </script>

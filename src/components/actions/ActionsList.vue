@@ -22,6 +22,7 @@
           v-model:selected="selected"
           dense
           :filter="filter"
+          :visible-columns="visibleColumns()"
         >
           <template v-slot:top-left>
             <div class="flex">
@@ -83,7 +84,7 @@
           </template>
 
           <template v-slot:header="props">
-            <q-tr :props="props">
+            <q-tr :props="props" >
               <q-th auto-width />
               <q-th auto-width />
               <q-th
@@ -97,12 +98,12 @@
           </template>
 
           <template v-slot:body="props">
-            <q-tr :props="props">
+            <q-tr :props="props" @click="onRowClick(props.row)">
               <q-td auto-width>
                 <q-checkbox dense v-model="props.selected" />
               </q-td>
               <q-td auto-width>
-                <q-btn :title="getRowIconTitle(props)" size="xs" :color=getRowIconColor(props) round dense  :icon=getRowIcon(props) />
+                <q-btn @click="onRowClick" :title="getRowIconTitle(props)" size="xs" :color=getRowIconColor(props) round dense  :icon=getRowIcon(props) />
               </q-td>
               <q-td
                 v-for="col in props.cols"
@@ -128,7 +129,6 @@
 <script>
 import NewActionForm from './NewActionForm.vue'
 
-
 export default {
   name: 'ActionsList',
   data() {
@@ -137,6 +137,7 @@ export default {
       selectedStatus: '',
       selected: [],
       filter: "",
+      layout: "listonly",
       columns: [
 
         {
@@ -145,6 +146,7 @@ export default {
           field: 'title',
           align: 'left',
           sortable: true,
+          visible: true,
         },
         {
           name: 'description',
@@ -152,6 +154,7 @@ export default {
           field: 'description',
           align: 'left',
           sortable: true,
+          visible: false,
         },
         {
           name: 'priority',
@@ -159,6 +162,7 @@ export default {
           field: 'priority',
           align: 'left',
           sortable: true,
+          visible: true,
         },
         {
           name: 'status',
@@ -166,6 +170,7 @@ export default {
           field: 'status',
           align: 'left',
           sortable: true,
+          visible: true,
         },
         {
           name: 'dueDate',
@@ -173,7 +178,8 @@ export default {
           field: 'dueDate',
           align: 'left',
           sortable: true,
-          sort: (a, b) => this.dateSort(a, b)
+          sort: (a, b) => this.dateSort(a, b),
+          visible: true,
         },],
 
       rows: [
@@ -305,7 +311,17 @@ export default {
       }
       return 'Not Started'
     },
-
+    visibleColumns() {
+      return this.columns.map(col => {
+        
+        if (col.visible) {
+          return col.name
+        }
+      })
+    },
+    onRowClick(row) {
+      this.$emit('row-click', row)
+    }
   }
 }
 </script>
