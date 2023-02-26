@@ -2,11 +2,11 @@
 FROM node:18-alpine as develop-stage
 WORKDIR /app
 COPY ../package*.json ./
+RUN npm install
 RUN npm install -g @quasar/cli
 COPY ../. .
 # build stage
 FROM develop-stage as build-stage
-RUN yarn
 RUN quasar build
 # production stage
 FROM nginx:1.17.5-alpine as production-stage
