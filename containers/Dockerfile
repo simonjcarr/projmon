@@ -1,11 +1,11 @@
 # develop stage
 FROM node:18-alpine as develop-stage
 WORKDIR /app
-COPY ../package*.json /app
+COPY ./package*.json /app
 RUN ls -alh
 RUN npm install
 RUN npm install -g @quasar/cli
-COPY ../. /app
+COPY . /app/
 # build stage
 FROM develop-stage as build-stage
 RUN quasar build
