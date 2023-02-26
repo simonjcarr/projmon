@@ -2,6 +2,7 @@
 FROM node:18-alpine as develop-stage
 WORKDIR /app
 COPY ../package*.json ./
+RUN ls -alh
 RUN npm install
 RUN npm install -g @quasar/cli
 COPY ../. .
